@@ -1,0 +1,48 @@
+package com.example.myflexiblefragment
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
+
+class CategoryFragment : Fragment(), View.OnClickListener {
+    private lateinit var btnDetailCategory: Button
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_category, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        btnDetailCategory = view.findViewById(R.id.btn_detail_category)
+        btnDetailCategory.setOnClickListener(this)
+    }
+
+    override fun onClick(v: View?) {
+        if (v?.id == R.id.btn_detail_category) {
+            val mBundle = Bundle()
+            mBundle.putString(DetailCategoryFragment.EXTRA_NAME, "Lifestyle")
+            val description = "Kategori ini akan berisi produk-produk lifestyle"
+
+            val mFragmentManager = parentFragmentManager
+            val mDetailCategoryFragment = DetailCategoryFragment().apply {
+                arguments = mBundle
+                this.description = description
+            }
+            mFragmentManager.commit {
+                replace(
+                    R.id.frame_container,
+                    mDetailCategoryFragment,
+                    DetailCategoryFragment::class.java.simpleName
+                )
+                addToBackStack(null)
+            }
+        }
+    }
+}
